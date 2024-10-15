@@ -1,0 +1,10 @@
+variable "vpc_1_id" {}
+variable "vpc_2_id" {}
+variable "vpc_3_id" {}
+variable "vpc_1_subnet_id" {}
+variable "vpc_2_subnet_id" {}
+variable "vpc_3_subnet_id" {}
+variable "vpc_1_cidr" {}
+variable "vpc_3_cidr" {}
+variable "vpc_2_cidr" {}
+variable "igw_id" {}

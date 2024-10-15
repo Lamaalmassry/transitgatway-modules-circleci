@@ -1,0 +1,8 @@
+public_key_path    = "~/.ssh/my-key-pair.pub"
+key_name           = "my-key-pair"
+vpc_2_cidr         = "10.2.0.0/16"
+vpc_1_cidr         = "10.1.0.0/16"
+vpc_3_cidr         = "10.3.0.0/16"
+vpc_1_private_cidr = "10.1.0.0/24"
+vpc_2_private_cidr = "10.2.0.0/24"
+vpc_3_public_cidr  = "10.3.0.0/24"

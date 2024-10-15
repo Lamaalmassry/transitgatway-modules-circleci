@@ -1,0 +1,57 @@
+version: 2.1
+
+executors:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.5.0
+    working_directory: ~/repo
+
+jobs:
+  terraform-plan:
+    executor: terraform
+    steps:
+      - checkout
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Terraform Plan
+          command: terraform plan
+
+  terraform-apply:
+    executor: terraform
+    steps:
+      - checkout
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Terraform Apply
+          command: terraform apply -auto-approve
+
+  terraform-destroy:
+    executor: terraform
+    steps:
+      - checkout
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Terraform Destroy
+          command: terraform destroy -auto-approve
+
+workflows:
+  version: 2
+  terraform-workflow:
+    jobs:
+      - terraform-plan
+      - terraform-apply:
+          requires:
+            - terraform-plan
+      - terraform-destroy:
+          requires:
+            - terraform-apply
+          filters:
+            branches:
+              only: main
+          when: << pipeline.git.commit.message contains "[destroy]" >>
