@@ -54,4 +54,4 @@ workflows:
           filters:
             branches:
               only: main
-          when: << pipeline.git.commit.message contains "[destroy]" >>
+          when: \<< pipeline.git.commit.message contains "[destroy]" \>>
