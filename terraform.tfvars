@@ -1,4 +1,4 @@
-public_key_path    = "~/.ssh/my-key-pair.pub"
+public_key_path    = "/home/username/.ssh/my-key-pair.pub"
 key_name           = "my-key-pair"
 vpc_2_cidr         = "10.2.0.0/16"
 vpc_1_cidr         = "10.1.0.0/16"
