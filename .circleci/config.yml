@@ -1,0 +1,64 @@
+version: 2.1
+
+executors:
+  terraform:
+    docker:
+      - image: hashicorp/terraform:1.5.0
+    working_directory: ~/repo
+
+jobs:
+  terraform-plan:
+    executor: terraform
+    steps:
+      - checkout
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Terraform Plan
+          command: terraform plan
+
+  terraform-apply:
+    executor: terraform
+    steps:
+      - checkout
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Terraform Apply
+          command: terraform apply -auto-approve
+
+  terraform-destroy:
+    executor: terraform
+    steps:
+      - checkout
+      - run:
+          name: Initialize Terraform
+          command: terraform init
+      - run:
+          name: Check for Destroy Keyword in Commit Message
+          command: |
+            if git log -1 --pretty=%B | grep -q '[destroy]'; then
+              echo "Destroy keyword found, proceeding with destroy."
+            else
+              echo "Destroy keyword not found, skipping destroy."
+              exit 0
+            fi
+      - run:
+          name: Terraform Destroy
+          command: terraform destroy -auto-approve
+
+workflows:
+  terraform-workflow:
+    jobs:
+      - terraform-plan
+      - terraform-apply:
+          requires:
+            - terraform-plan
+      - terraform-destroy:
+          requires:
+            - terraform-apply
+          filters:
+            branches:
+              only: main
