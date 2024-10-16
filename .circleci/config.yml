@@ -5,12 +5,30 @@ executors:
     docker:
       - image: hashicorp/terraform:1.5.0
     working_directory: ~/repo
+    environment:
+      AWS_ACCESS_KEY_ID: << pipeline.parameters.aws_access_key_id >>
+      AWS_SECRET_ACCESS_KEY: << pipeline.parameters.aws_secret_access_key >>
+      AWS_DEFAULT_REGION: << pipeline.parameters.aws_default_region >>
+      SSH_PRIVATE_KEY: << pipeline.parameters.ssh_private_key >>  # Add your private key here
+
+parameters:
+ 
+  ssh_private_key:
+    type: string
+    default: ""  # This will hold your SSH private key
 
 jobs:
   terraform-plan:
     executor: terraform
     steps:
       - checkout
+      - run:
+          name: Create SSH Key Pair
+          command: |
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/my-key-pair.pub  # Generate the public key
       - run:
           name: Initialize Terraform
           command: terraform init
@@ -23,6 +41,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Create SSH Key Pair
+          command: |
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/my-key-pair.pub  # Generate the public key
+      - run:
           name: Initialize Terraform
           command: terraform init
       - run:
@@ -33,6 +58,13 @@ jobs:
     executor: terraform
     steps:
       - checkout
+      - run:
+          name: Create SSH Key Pair
+          command: |
+            mkdir -p ~/.ssh
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/my-key-pair.pub  # Generate the public key
       - run:
           name: Initialize Terraform
           command: terraform init
