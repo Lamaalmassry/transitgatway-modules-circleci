@@ -16,8 +16,7 @@ jobs:
           command: |
             mkdir -p ~/.ssh
             ssh-keygen -t rsa -b 4096 -C "circleci@example.com" -f ~/.ssh/id_rsa -N ""
-            echo "$(cat ~/.ssh/id_rsa)" > $SSH_PRIVATE_KEY  # Set the SSH_PRIVATE_KEY environment variable
-            echo "$(cat ~/.ssh/id_rsa.pub)"  # Output the public key for later use
+            echo "Private key generated."
       - run:
           name: Initialize Terraform
           command: terraform init
