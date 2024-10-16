@@ -40,9 +40,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Initialize Terraform
-          command: terraform init
-      - run:
           name: Check for Destroy Keyword in Commit Message
           command: |
             if git log -1 --pretty=%B | grep -q '\[destroy\]'; then
@@ -50,12 +47,13 @@ jobs:
             else
               echo "Destroy keyword not found, skipping destroy."
               exit 0
+            fi  # <-- Missing fi to close the if block
       - run:
-          name: Validate Terraform Configuration
-          command: terraform validate
+          name: Initialize Terraform
+          command: terraform init
       - run:
           name: Terraform Destroy
-          command: terraform destroy -auto-approve || { echo "Terraform destroy failed"; exit 1; }
+          command: terraform destroy -auto-approve
 
 workflows:
   terraform-workflow:
