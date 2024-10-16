@@ -12,14 +12,14 @@ executors:
 
 parameters:
   aws_access_key_id:
-    type: string   # Change to string
-    default: AWS_ACCESS_KEY_ID
+    type: string
+    description: "AWS Access Key ID"
   aws_secret_access_key:
-    type: string   # Change to string
-    default: AWS_SECRET_ACCESS_KEY
+    type: string
+    description: "AWS Secret Access Key"
   aws_default_region:
-    type: string   # Change to string
-    default: AWS_DEFAULT_REGION
+    type: string
+    description: "AWS Region"
 
 jobs:
   terraform-plan:
@@ -31,7 +31,10 @@ jobs:
           command: terraform init
       - run:
           name: Terraform Plan
-          command: terraform plan
+          command: terraform plan \
+            -var="AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
+            -var="AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
+            -var="AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
 
   terraform-apply:
     executor: terraform
@@ -42,7 +45,10 @@ jobs:
           command: terraform init
       - run:
           name: Terraform Apply
-          command: terraform apply -auto-approve
+          command: terraform apply -auto-approve \
+            -var="AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
+            -var="AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
+            -var="AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
 
   terraform-destroy:
     executor: terraform
@@ -61,7 +67,10 @@ jobs:
               exit 0
       - run:
           name: Terraform Destroy
-          command: terraform destroy -auto-approve
+          command: terraform destroy -auto-approve \
+            -var="AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" \
+            -var="AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" \
+            -var="AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
 
 workflows:
   terraform-workflow:
