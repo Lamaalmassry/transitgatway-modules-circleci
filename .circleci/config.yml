@@ -34,8 +34,7 @@ jobs:
           command: terraform init
       - run:
           name: Terraform Plan
-          command: |
-            terraform plan -var="AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" -var="AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" -var="AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
+          command: terraform plan
 
   terraform-apply:
     executor: terraform
@@ -46,8 +45,7 @@ jobs:
           command: terraform init
       - run:
           name: Terraform Apply
-          command: |
-            terraform apply -auto-approve -var="AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" -var="AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" -var="AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
+          command: terraform apply -auto-approve
 
   terraform-destroy:
     executor: terraform
@@ -66,8 +64,7 @@ jobs:
               exit 0
       - run:
           name: Terraform Destroy
-          command: |
-            terraform destroy -auto-approve -var="AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}" -var="AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}" -var="AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}"
+          command: terraform destroy -auto-approve
 
 workflows:
   terraform-workflow:
