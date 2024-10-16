@@ -15,9 +15,9 @@ jobs:
           name: Create SSH Key Pair
           command: |
             mkdir -p ~/.ssh
-            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/my-key-pair.pub  # Generate the public key
+            ssh-keygen -t rsa -b 4096 -C "circleci@example.com" -f ~/.ssh/id_rsa -N ""
+            echo "$(cat ~/.ssh/id_rsa)" > $SSH_PRIVATE_KEY  # Set the SSH_PRIVATE_KEY environment variable
+            echo "$(cat ~/.ssh/id_rsa.pub)"  # Output the public key for later use
       - run:
           name: Initialize Terraform
           command: terraform init
@@ -30,13 +30,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create SSH Key Pair
-          command: |
-            mkdir -p ~/.ssh
-            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/my-key-pair.pub  # Generate the public key
-      - run:
           name: Initialize Terraform
           command: terraform init
       - run:
@@ -47,13 +40,6 @@ jobs:
     executor: terraform
     steps:
       - checkout
-      - run:
-          name: Create SSH Key Pair
-          command: |
-            mkdir -p ~/.ssh
-            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-            chmod 600 ~/.ssh/id_rsa
-            ssh-keygen -y -f ~/.ssh/id_rsa > ~/.ssh/my-key-pair.pub  # Generate the public key
       - run:
           name: Initialize Terraform
           command: terraform init
