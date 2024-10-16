@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "jdp-example"
+    bucket         = "backend-bucket-terraform"
     key            = "terraform.tfstate"
 
   }
