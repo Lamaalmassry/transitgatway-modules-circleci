@@ -13,12 +13,15 @@ executors:
 parameters:
   aws_access_key_id:
     type: string
+    default: ""  # or provide a sample value like "YOUR_AWS_ACCESS_KEY_ID"
     description: "AWS Access Key ID"
   aws_secret_access_key:
     type: string
+    default: ""  # or provide a sample value like "YOUR_AWS_SECRET_ACCESS_KEY"
     description: "AWS Secret Access Key"
   aws_default_region:
     type: string
+    default: "us-east-1"  # or specify a preferred default region, e.g., "us-east-1"
     description: "AWS Region"
 
 jobs:
