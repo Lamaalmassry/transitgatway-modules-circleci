@@ -12,12 +12,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Create SSH Key Pair
-          command: |
-            mkdir -p ~/.ssh
-            ssh-keygen -t rsa -b 4096 -C "circleci@example.com" -f ~/.ssh/id_rsa -N ""
-            echo "Private key generated."
-      - run:
           name: Initialize Terraform
           command: terraform init
       - run:
